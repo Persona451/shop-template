@@ -21,8 +21,10 @@ const Filter = (props) => {
                     <p>
                         Sort by 
                         <select onChange={e => props.setSorted(e.target.value)}value={props.sorted}>
-                            <option value="newest">Newest</option>
-                            <option value="price">Price</option>
+                            <option value="newestAsc">NewestAsc</option>
+                            <option value="priceAsc">PriceAsc</option>
+                            <option value="priceDesc">PriceDesc</option>
+                            <option value="newestDesc">newestDesc</option>
                         </select>
                     </p>    
                 </div>    
