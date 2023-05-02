@@ -9,9 +9,10 @@ import ReactPaginate from 'react-paginate';
 
 const CatalogPage = (props) => {
   const [products, setProducts] = useState([]);
-  const [sorted, setSorted] = useState('priceDesc')
+  const [sorted, setSorted] = useState('priceAsc')
   const [productOffset, setproductOffset] = useState(0); // с какого продукта начинать
   const productsPerPage = 4
+  const [gridView, setGridView] = useState(true)
 
   const endOffset = productOffset + productsPerPage; // число, до которого нам нужно показывать продукт
   console.log(`Loading items from ${productOffset} to ${endOffset}`);
@@ -27,7 +28,7 @@ const CatalogPage = (props) => {
 
     servicesApi.getProducts()
       .then(res => {
-        const sortedProducts = res.data.sort((a, b) => b.price - a.price)
+        const sortedProducts = res.data.sort((a, b) => a.price - b.price)
         setProducts(sortedProducts)
       })
       .catch(err => console.log(err.response.data))
@@ -39,40 +40,43 @@ const CatalogPage = (props) => {
       setProducts(sortedProducts)
     }
     if (sorted == 'newestAsc') {
-      const sortedProduct = [...products].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      setProducts(sortedProduct)
+      const sortedNewest = [...products].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      setProducts(sortedNewest)
     }
     if (sorted == 'priceDesc') {
       const sortedProducts = [...products].sort((a, b) => b.price - a.price)
       setProducts(sortedProducts)
     }
     if (sorted == 'newestDesc') {
-      const sortedProduct = [...products].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-      setProducts(sortedProduct)
+      const sortedNewest = [...products].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+      setProducts(sortedNewest)
     }
   }, [sorted])
 
   return (
     <div>
-      <Breadcrumbs />
-      <Filter setSorted={setSorted} sorted={sorted} />
+      <Breadcrumbs  />
+      <Filter setSorted={setSorted} sorted={sorted}
+        setGridView={setGridView} gridView={gridView}
+      />
       <div className={styles["products-wrapper"]}>
-        {currentProducts.map(product => {
-          const dateString = product.createdAt;
-          const date = new Date(dateString);
-          const options = { day: 'numeric', month: 'short', year: 'numeric' };
-          const formattedDate = date.toLocaleDateString('en-US', options);
-          return (
-            <Product
-              key={product._id}
-              img={product.img}
-              date={formattedDate}
-              title={product.title}
-              id={product._id}
-              price={product.price}
-            />
-          );
-        })}
+      {currentProducts.map(product => {
+        const dateString = product.createdAt;
+        const date = new Date(dateString);
+        const options = { day: 'numeric', month: 'short', year: 'numeric' };
+        const formattedDate = date.toLocaleDateString('en-US', options);
+        return (
+        <Product
+          gridView={gridView}
+          key={product._id}
+          img={product.img}
+          date={formattedDate}
+          title={product.title}
+          id={product._id}
+          price={product.price}
+        />
+        );
+      })}
       </div>
       <ReactPaginate
         breakLabel="..."
