@@ -12,7 +12,7 @@ const Header = () => {
             <header>
                 <div className={styles.wrapper}>
                     <nav className={styles.nav}>
-                        <NavLink to="/auth" className={activeClass}>Home</NavLink>
+                        <NavLink to="/" className={activeClass}>Home</NavLink>
                         <NavLink to="/account" className={activeClass}>Account</NavLink>
                         <NavLink to="/catalog" className={activeClass}>Shop</NavLink>
                         <NavLink to="/contacts" className={activeClass}>Contacts</NavLink>

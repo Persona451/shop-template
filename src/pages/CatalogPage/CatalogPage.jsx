@@ -12,6 +12,7 @@ const CatalogPage = (props) => {
   const [sorted, setSorted] = useState('priceAsc')
   const [productOffset, setproductOffset] = useState(0); // с какого продукта начинать
   const productsPerPage = 4
+  const [forcePage, setForcePage] = useState(0)
   const [gridView, setGridView] = useState(true)
 
   const endOffset = productOffset + productsPerPage; // число, до которого нам нужно показывать продукт
@@ -22,6 +23,7 @@ const CatalogPage = (props) => {
   const handlePageClick = (event) => {
     const newOffset = (event.selected * productsPerPage) // 2 * 4 = 8
     setproductOffset(newOffset);
+    setForcePage(event.selected)
   };
 
   useEffect(() => {
@@ -51,13 +53,15 @@ const CatalogPage = (props) => {
       const sortedNewest = [...products].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
       setProducts(sortedNewest)
     }
+    setForcePage(0)
+    setproductOffset(0)
   }, [sorted])
 
   return (
     <div>
       <Breadcrumbs  />
       <Filter setSorted={setSorted} sorted={sorted}
-        setGridView={setGridView} gridView={gridView}
+        setGridView={setGridView}
       />
       <div className={styles["products-wrapper"]}>
       {currentProducts.map(product => {
@@ -80,12 +84,17 @@ const CatalogPage = (props) => {
       </div>
       <ReactPaginate
         breakLabel="..."
-        nextLabel="next >"
+        nextLabel="Next"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         pageCount={pageCount}
-        previousLabel="< previous"
+        previousLabel=""
         renderOnZeroPageCount={null}
+        containerClassName={styles["pagination-wrapper"]}
+        pageLinkClassName={styles["pagination-page"]}
+        nextClassName={styles["pagination-next"]}
+        activeLinkClassName={styles["pagination-active"]}
+        forcePage={forcePage}
       />
       <Info />
     </div>
