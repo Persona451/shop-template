@@ -22,7 +22,6 @@ const RegisterForm = ({ styles }) => {
         console.log(error.response.data);
       }
     };
-
     return {
       registration,
       handleSubmit,

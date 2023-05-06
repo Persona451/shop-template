@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import styles from './singleproductcard.module.css'
 import { useParams } from "react-router-dom";
 import servicesApi from "../../services/product";
+import { addToCart } from "../../redux/cartSlice";
+import { useDispatch } from "react-redux";
 
 const SingleProductCard = (props) => {
     const [product, setProduct] = useState({});
+    const [quantity, setQuantity] = useState(1);
     const { id } = useParams();
-    console.log(props);
+    const dispatch = useDispatch();
     
     useEffect(() => {
         document.documentElement.scroll({
@@ -34,11 +37,11 @@ const SingleProductCard = (props) => {
                     <p className={styles.descr}>{product.descr}</p>
                     <div className={styles["control-wrapper"]}>
                         <div className={styles.quantity}>
-                            <button className={styles["quantity-control"]}>-</button> 
-                                <span>1</span>
-                            <button className={styles["quantity-control"]}>+</button>
+                            <button className={styles["quantity-control"]} onClick={() => quantity > 1 && setQuantity(quantity - 1)}>-</button> 
+                                <span>{quantity}</span>
+                            <button className={styles["quantity-control"]} onClick={() => setQuantity(quantity + 1)}>+</button>
                         </div>
-                        <button className={styles.add}>
+                        <button className={styles.add} onClick={() => dispatch(addToCart(product))}>
                             Add To Cart
                         </button>
                     </div>

@@ -2,8 +2,10 @@ import React from "react";
 import styles from "./header.module.css";
 import Modal from "../Modal/Modal";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+    const CartQuantity = useSelector((state) => state.cart.quantityCart);
     const activeClass = ({ isActive }) => {
         return isActive ? `${styles.active} ${styles.link}` : styles.link;
     };
@@ -28,10 +30,11 @@ const Header = () => {
                             <img src="/images/favorite-icon.png" alt="" className={styles.icon} />
                         </p>
                         <p className={styles.icon}>
-                            <span className={styles.quantity}>1</span>
+                        {CartQuantity > 0 && <span className={styles.quantity}>{CartQuantity}</span>}
                             <img src="/images/basket-icon.png" alt="" className={styles.icon} />
                         </p>
                     </div>
+                    { CartQuantity > 0 && <Modal /> }
                 </div>
             </header>
         </>
