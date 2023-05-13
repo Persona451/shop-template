@@ -41,7 +41,7 @@ const SingleProductCard = (props) => {
                                 <span>{quantity}</span>
                             <button className={styles["quantity-control"]} onClick={() => setQuantity(quantity + 1)}>+</button>
                         </div>
-                        <button className={styles.add} onClick={() => dispatch(addToCart(product))}>
+                        <button className={styles.add} onClick={() => dispatch(addToCart({...product, quantity}))}>
                             Add To Cart
                         </button>
                     </div>

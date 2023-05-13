@@ -1,9 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { closeModal } from "../../redux/cartSlice";
 import styles from "./modal.module.css";
 
 const Modal = () => {
   const products = useSelector(state => state.cart.productsCart)
+  const dispatch = useDispatch()
   
   return (
     <div className={styles.wrapper}>
@@ -12,16 +15,17 @@ const Modal = () => {
           src="/images/basket-close-icon.png"
           alt=""
           className={styles.close}
+          onClick={() => dispatch(closeModal())}
         />
         <h2 className={styles.title}>Shopping Cart</h2>
         <div className={styles.line}></div>
         <div className={styles.products}>
           {products.map(product => (
             <div key={product.id} className={styles.product}>
-              <img src={product.img} alt={product.img} />
+              <img src={product.img} alt="" className={styles.img}/>
               <div className={styles.info}>
                 <h5 className={styles.name}>{product.title}</h5>
-                <p>1 x Rs. {product.price}</p>
+                <p>x Rs. {product.price} X {product.quantity}</p>
               </div>
               <img src="/images/close-icon.png" alt="" />
             </div>
@@ -32,8 +36,8 @@ const Modal = () => {
             <p className={styles.subtotal}>Subtotal</p> Rs. {getTotalPrice(products)}
           </div>
           <div className={styles.line}></div>
-          <a href="/cart" className={styles.link}>View Cart</a>
-          <a href="/checkout" className={styles.link}>Checkout</a>
+          <Link to="/cart" className={styles.link} onClick={() => dispatch(closeModal())}>View Cart</Link>
+          <Link to="/checkout" className={styles.link} onClick={() => dispatch(closeModal())}>Checkout</Link>
         </div>
       </div>
     </div>

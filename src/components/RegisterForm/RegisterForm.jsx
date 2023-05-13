@@ -14,7 +14,7 @@ const RegisterForm = ({ styles }) => {
 
     const handleSubmit = async (event) => {
       event.preventDefault();
-      const userData = { email, username, password };
+      const userData = { email, password, username };
       try {
         const response = await registration(userData);
         console.log(response.data);
@@ -22,6 +22,7 @@ const RegisterForm = ({ styles }) => {
         console.log(error.response.data);
       }
     };
+
     return {
       registration,
       handleSubmit,
@@ -45,19 +46,6 @@ const RegisterForm = ({ styles }) => {
       </div>
       <div className={styles.control}>
         <label htmlFor="password" className={styles.label}>
-          Login
-        </label>
-        <input
-          type="text"
-          placeholder="login"
-          name="login"
-          className={styles.input}
-          value={username}
-          onChange={(event) => setUserName(event.target.value)}
-        />
-      </div>
-      <div className={styles.control}>
-        <label htmlFor="password" className={styles.label}>
           Password
         </label>
         <input
@@ -67,6 +55,19 @@ const RegisterForm = ({ styles }) => {
           className={styles.input}
           value={password}
           onChange={(event) => setPassword(event.target.value)}
+        />
+      </div>
+      <div className={styles.control}>
+        <label htmlFor="text" className={styles.label}>
+          Login
+        </label>
+        <input
+          type="text"
+          placeholder="login"
+          name="login"
+          className={styles.input}
+          value={username}
+          onChange={(event) => setUserName(event.target.value)}
         />
       </div>
       <input type="submit" value="Register" className={styles.submit} />

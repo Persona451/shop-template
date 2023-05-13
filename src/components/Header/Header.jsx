@@ -2,10 +2,13 @@ import React from "react";
 import styles from "./header.module.css";
 import Modal from "../Modal/Modal";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { openModal } from "../../redux/cartSlice";
 
 const Header = () => {
-    const CartQuantity = useSelector((state) => state.cart.quantityCart);
+    const isOpen = useSelector(state => state.cart.isOpen);
+    const dispatch = useDispatch()
+    const cartQuantity = useSelector(state => state.cart.quantityCart);
     const activeClass = ({ isActive }) => {
         return isActive ? `${styles.active} ${styles.link}` : styles.link;
     };
@@ -30,11 +33,16 @@ const Header = () => {
                             <img src="/images/favorite-icon.png" alt="" className={styles.icon} />
                         </p>
                         <p className={styles.icon}>
-                        {CartQuantity > 0 && <span className={styles.quantity}>{CartQuantity}</span>}
-                            <img src="/images/basket-icon.png" alt="" className={styles.icon} />
+                        {cartQuantity > 0 && <span className={styles.quantity}>{cartQuantity}</span>}
+                            <img src="/images/basket-icon.png" alt="" className={styles.icon} 
+                            onClick={() => {
+                                if(cartQuantity !== 0)
+                                dispatch(openModal())
+                            }}
+                            />
                         </p>
                     </div>
-                    { CartQuantity > 0 && <Modal /> }
+                    { isOpen && <Modal /> }
                 </div>
             </header>
         </>

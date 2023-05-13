@@ -1,14 +1,20 @@
 import React from 'react';
 import styles from './checkout.module.css'
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import { useSelector } from 'react-redux';
+import { CardElement } from '@stripe/react-stripe-js';
 
 const CheckoutForm = () => {
+  const sum = useSelector(state => state.cart.sum);
     return (
       <>
       <Breadcrumbs />
+      <h1>Сумма оплаты: {sum}</h1>
       <div className={styles.wrapper}>
       <form className={styles.card}>
-        <div></div>
+        <div>
+          <CardElement />
+        </div>
         <button>Pay</button>
       </form>
       <div className={styles["product-wrapper"]}>
