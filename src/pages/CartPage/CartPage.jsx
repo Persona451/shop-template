@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
 import CartProduct from '../../components/CartProduct/CartProduct';
 import styles from './cartpage.module.css'
@@ -30,7 +31,7 @@ const CartPage = () => {
               <p className={styles.total}>
                 Total <span>50000</span>
               </p>
-              <a href="/checkout" className={styles.checkout}>Check Out</a>
+              <Link to="/checkout" className={styles.checkout}>Check Out</Link>
             </div>
           </div>
         </section>
