@@ -6,6 +6,7 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const cardStyle = {
   style: {
@@ -25,6 +26,7 @@ const CheckoutForm = () => {
   const stripe = useStripe()
   const elements = useElements()
   const [clientSecret, setClienSecret] = useState('')
+  const navigate = useNavigate()
 
   useEffect(() => {
     axios.post("https://whispering-river-87788.herokuapp.com/api/create-payment-intent", {
@@ -39,7 +41,15 @@ const CheckoutForm = () => {
         card: elements.getElement(CardElement)
       }
     })
-    .then (res => console.log(res))
+    .then (res => {
+      if (res.error) {
+        alert(res.error.message)
+      } else {
+        alert("Ваша оплата прошла успешно")
+        navigate("/catalog")
+      }
+      console.log(res)
+    })
   }
   return (
     <>
