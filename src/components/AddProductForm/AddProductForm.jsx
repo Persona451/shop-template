@@ -22,16 +22,16 @@ const AddProductForm = () => {
             const filename = Date.now() + image.name
             imageData.append("name", filename)
             imageData.append("file", image)
-            axios.post("https://whispering-river-87788.herokuapp.com/upload", imageData)
+            axios.post("https://whispering-river-87788.herokuapp.com/api/upload", imageData)
                 .then(res => { 
                     console.log(res)
                     newProduct.img = `https://whispering-river-87788.herokuapp.com/images/${filename}`
+                        axios.post("https://whispering-river-87788.herokuapp.com/api/products", newProduct)
+                            .then(res => console.log(res))
+                            .catch(err => console.log(err))
                 })
                 .catch(err => console.log(err))
         }
-        axios.post("https://whispering-river-87788.herokuapp.com/products", newProduct)
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
     }
     return (
         <form onSubmit={addProduct}>

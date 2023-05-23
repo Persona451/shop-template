@@ -1,30 +1,43 @@
 import React, { useState, useEffect } from "react";
 import styles from './singleproductcard.module.css'
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import servicesApi from "../../services/product";
 import { addToCart } from "../../redux/cartSlice";
 import { useDispatch } from "react-redux";
+import productService from "../../services/product"
 
 const SingleProductCard = (props) => {
     const [product, setProduct] = useState({});
     const [quantity, setQuantity] = useState(1);
     const { id } = useParams();
     const dispatch = useDispatch();
-    
+    const navigate = useNavigate()
+
+    const deleteProduct = () => {
+        productService.deleteProduct(id)
+        .then(res => {
+            console.log(res)
+            navigate('/catalog')
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
     useEffect(() => {
         document.documentElement.scroll({
-          top: "0",
-          behavior: "smooth"
+            top: "0",
+            behavior: "smooth"
         });
         servicesApi.getProduct(id).then((res) => {
-          setProduct(res.data);
+            setProduct(res.data);
         });
-      }, []);
+    }, []);
 
     const date = new Date(product.createdAt);
     const options = { day: "numeric", month: "short", year: "numeric" };
     const formattedDate = date.toLocaleDateString("en-US", options);
-    
+
     return (
         <div className={styles.card}>
             <div className={styles.wrapper}>
@@ -37,15 +50,19 @@ const SingleProductCard = (props) => {
                     <p className={styles.descr}>{product.descr}</p>
                     <div className={styles["control-wrapper"]}>
                         <div className={styles.quantity}>
-                            <button className={styles["quantity-control"]} onClick={() => quantity > 1 && setQuantity(quantity - 1)}>-</button> 
-                                <span>{quantity}</span>
+                            <button className={styles["quantity-control"]} onClick={() => quantity > 1 && setQuantity(quantity - 1)}>-</button>
+                            <span>{quantity}</span>
                             <button className={styles["quantity-control"]} onClick={() => setQuantity(quantity + 1)}>+</button>
                         </div>
-                        <button className={styles.add} onClick={() => dispatch(addToCart({...product, quantity}))}>
+                        <button className={styles.add} onClick={() => dispatch(addToCart({ ...product, quantity }))}>
                             Add To Cart
                         </button>
                     </div>
                 </div>
+            </div>
+            <div className={styles.control}>
+                <button className={styles.delete} onClick={deleteProduct}>Delete</button>
+                <button className={styles.update}>Update</button>
             </div>
         </div>
     );
